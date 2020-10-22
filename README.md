@@ -1,8 +1,8 @@
 # HSCG
 
-HSCG(Hybrid, Scaffold, Chromosomer, Gap-fill) is a hybrid assembly pipeline using short reads and long reads.
 
-![image-20201023035137919](https://github.com/FirePanda007/HSCG/blob/main/pipeline.PNG)
+
+HSCG(Hybrid, Scaffold, Chromosomer, Gap-fill) is a hybrid assembly pipeline using short reads and long reads.
 
 
 
