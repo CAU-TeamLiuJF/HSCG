@@ -2,6 +2,8 @@
 
 HSCG(Hybrid, Scaffold, Chromosomer, Gap-fill) is a hybrid assembly pipeline using short reads and long reads.
 
+![image-20201023035137919](C:\Users\panda\AppData\Roaming\Typora\typora-user-images\image-20201023035137919.png)
+
 
 
 ## Installation
@@ -76,7 +78,7 @@ source source_env.sh
 
 ## Usage
 
-Before we run the pipeline, the environment should be activated:
+Before running the pipeline, environment should be activated:
 
 ```shell
 workon HSCG
@@ -107,7 +109,26 @@ optional arguments:
 
 
 
+The data sections in opt.ini is as follow:
+
+```shell
+[data]
+short_reads_file = 
+short_reads_paired = 1
+long_reads_file = 
+reference_file = 
+assembly = 
+```
+
+**Note 1: If paired, short_reads_file should be splitted by comma**
+
+**Note 2: [short_reads_file], [long_reads_file], [reference_file] need existed file (can be empty)**
+
+
+
 ## Example
+
+### Common use
 
 **Generate configuration files**
 
@@ -127,5 +148,161 @@ Three configurations will be created:
 
 ```shell
 hscg_pipeline.py --run
+```
+
+
+
+### Use some specific modules
+
+* only short reads quality control
+
+```
+# opt.ini
+[data]
+short_reads_file = R1.fq,R2.fq
+short_reads_paired = 1
+long_reads_file = pacbio.fasta / an empty fasta
+reference_file = reference.fasta / an empty fasta
+assembly = 
+
+[short_read]
+need_clean = 1
+workdir = short_reads_qc
+
+[long_read]
+need_clean = 0
+workdir = long_reads_correct
+
+[assembly]
+need = 0
+workdir = assembly
+
+[scaffolding]
+need = 0
+method_type = PBJELLY2
+workdir = scaffolding
+
+[scaffolding_ref_based]
+need = 0
+workdir = scaffolding_ref_based
+
+[gap_filling]
+method_type = TGS_GapCloser
+need = 0
+workdir = gap_filling
+```
+
+* only assembly
+
+```
+# opt.ini
+[data]
+short_reads_file = R1.fq,R2.fq
+short_reads_paired = 1
+long_reads_file = pacbio.fasta
+reference_file = reference.fasta
+assembly = 
+
+[short_read]
+need_clean = 0
+workdir = short_reads_qc
+
+[long_read]
+need_clean = 0
+workdir = long_reads_correct
+
+[assembly]
+need = 1
+workdir = assembly
+
+[scaffolding]
+need = 0
+method_type = PBJELLY2
+workdir = scaffolding
+
+[scaffolding_ref_based]
+need = 0
+workdir = scaffolding_ref_based
+
+[gap_filling]
+method_type = TGS_GapCloser
+need = 0
+workdir = gap_filling
+```
+
+* only gap filling
+
+```shell
+# opt.ini
+[data]
+short_reads_file = R1.fq,R2.fq
+short_reads_paired = 1
+long_reads_file = pacbio.fasta
+reference_file = reference.fasta / an empty file
+assembly = assembly.fasta
+
+[short_read]
+need_clean = 0
+workdir = short_reads_qc
+
+[long_read]
+need_clean = 0
+workdir = long_reads_correct
+
+[assembly]
+need = 0
+workdir = assembly
+
+[scaffolding]
+need = 0
+method_type = PBJELLY2
+workdir = scaffolding
+
+[scaffolding_ref_based]
+need = 0
+workdir = scaffolding_ref_based
+
+[gap_filling]
+method_type = TGS_GapCloser
+need = 1
+workdir = gap_filling
+```
+
+* short-reads quality control + long reads correction + assembly
+
+```
+# opt.ini
+[data]
+short_reads_file = R1.fq,R2.fq
+short_reads_paired = 1
+long_reads_file = pacbio.fasta
+reference_file = reference.fasta / an empty file
+assembly = 
+
+[short_read]
+need_clean = 1
+workdir = short_reads_qc
+
+[long_read]
+need_clean = 1
+workdir = long_reads_correct
+
+[assembly]
+need = 1
+workdir = assembly
+
+[scaffolding]
+need = 0
+method_type = PBJELLY2
+workdir = scaffolding
+
+[scaffolding_ref_based]
+need = 0
+workdir = scaffolding_ref_based
+
+[gap_filling]
+method_type = TGS_GapCloser
+need = 0
+workdir = gap_filling
 ```
 
