@@ -8,14 +8,15 @@ HSCG(Hybrid, Scaffold, Chromosomer, Gap-fill) is a hybrid assembly pipeline usin
 
 Running HSCG requires a Linux-system with bash, Python3(>3.6) and Perl(>5.16). 
 
+
+
 ### Python Dependencies
-<<<<<<< HEAD
+
+
+
 
 The following Python modules need to be installed:
 
-=======
-The following Python modules need to be installed:
->>>>>>> 489bf8c3c78a5eba03b177cccfde1effb9ceaf9d
 * `biopython`
 * `Networkx`
 * `pyparsing`
@@ -24,22 +25,23 @@ The following Python modules need to be installed:
 * `pysam`
 * `intervaltree`
 
-The following software should also be installed in the same PYTHONPATH
-<<<<<<< HEAD
 
-=======
->>>>>>> 489bf8c3c78a5eba03b177cccfde1effb9ceaf9d
+
+The following software should also be installed in the same PYTHONPATH
+
 * [cutadapt](https://github.com/marcelm/cutadapt)
 * [RaGoo](https://github.com/malonge/RaGOO)
 
-We recommend you create a virtual python environment.
-<<<<<<< HEAD
 
-=======
->>>>>>> 489bf8c3c78a5eba03b177cccfde1effb9ceaf9d
+
+We recommend you create a virtual python environment.
+
+
 ```
 mkvirtualenv HSCG
 ```
+
+
 
 ### Assembly Dependencies
 
