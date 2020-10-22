@@ -117,7 +117,7 @@ hscg_pipeline.py --config
 
 Three configurations will be created:
 
-* **opt.ini: ** Define which step to use.
+* **opt.ini:** Define which step to use.
 * **bopt.ini**: Define the path of softwares.
 * **parameters.ini:** Define the operation parameters of each step.
 
