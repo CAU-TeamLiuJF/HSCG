@@ -18,7 +18,7 @@ Running HSCG requires a Linux-system with bash, Python3(>3.6) and Perl(>5.16).
 The following Python modules need to be installed:
 
 * `biopython`
-* `Networkx`
+* `Networkx`  == 2.3
 * `pyparsing`
 * `numpy`
 * `h5py`
