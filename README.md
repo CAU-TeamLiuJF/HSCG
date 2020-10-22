@@ -1,8 +1,5 @@
 # HSCG
-<<<<<<< HEAD
 
-=======
->>>>>>> 489bf8c3c78a5eba03b177cccfde1effb9ceaf9d
 HSCG(Hybrid, Scaffold, Chromosomer, Gap-fill) is a hybrid assembly pipeline using short reads and long reads.
 
 
