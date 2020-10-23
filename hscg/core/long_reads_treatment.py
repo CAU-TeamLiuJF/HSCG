@@ -117,6 +117,8 @@ class LongReadsTreatment:
         self.validate_config_params()
 
         if self.need == 1:
+            current_path = os.getcwd()
+
             # Initialize command
             command_content_list = [self.binary_config_params[self.module_name]['lordec_path']]
             command_content_list.append(self.core_config_params[self.module_name]['param'])
@@ -130,13 +132,13 @@ class LongReadsTreatment:
                     fq1, fq2 = self.pipeline_config_params['data']['short_reads_file'].split(',')
                     fq1_name = '.'.join(os.path.splitext(os.path.split(fq1)[1])[0].split('.')[:-1]) + "_val_1.fq"
                     fq2_name = '.'.join(os.path.splitext(os.path.split(fq2)[1])[0].split('.')[:-1]) + "_val_2.fq"
-                    fq1_path = os.path.join('..', self.pipeline_config_params['short_read']['workdir'], fq1_name)
-                    fq2_path = os.path.join('..', self.pipeline_config_params['short_read']['workdir'], fq2_name)
+                    fq1_path = os.path.join(current_path, self.pipeline_config_params['short_read']['workdir'], fq1_name)
+                    fq2_path = os.path.join(current_path, self.pipeline_config_params['short_read']['workdir'], fq2_name)
                     command_content_list.append("-2 {},{}".format(fq1_path, fq2_path))
                 else:
                     fq = self.pipeline_config_params['data']['short_reads_file']
                     fq_name = '.'.join(os.path.splitext(os.path.split(fq)[1])[0].split('.')[:-1]) + "_val.fq"
-                    fq_path = os.path.join('..', self.pipeline_config_params['short_read']['workdir'], fq_name)
+                    fq_path = os.path.join(current_path, self.pipeline_config_params['short_read']['workdir'], fq_name)
                     command_content_list.append("-2 {}".format(fq_path))
             else:
                 if self.pipeline_config_params['data']['short_reads_paired'] == '1':
@@ -152,7 +154,6 @@ class LongReadsTreatment:
             command_content_list.append("-T {}".format(self.core_config_params[self.module_name]['threads']))
 
             # Generate command bash
-            current_path = os.getcwd()
             workdir = self.pipeline_config_params[self.module_name]['workdir']
 
             os.makedirs(workdir, exist_ok=True)

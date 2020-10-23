@@ -123,6 +123,8 @@ class Assembly:
         self.validate_config_params()
 
         if self.need == 1:
+            current_path = os.getcwd()
+
             # Initialize command
             command_list = []
             # step 1
@@ -134,13 +136,13 @@ class Assembly:
                     fq1, fq2 = self.pipeline_config_params['data']['short_reads_file'].split(',')
                     fq1_name = '.'.join(os.path.splitext(os.path.split(fq1)[1])[0].split('.')[:-1]) + "_val_1.fq"
                     fq2_name = '.'.join(os.path.splitext(os.path.split(fq2)[1])[0].split('.')[:-1]) + "_val_2.fq"
-                    fq1_path = os.path.join('..', self.pipeline_config_params['short_read']['workdir'], fq1_name)
-                    fq2_path = os.path.join('..', self.pipeline_config_params['short_read']['workdir'], fq2_name)
+                    fq1_path = os.path.join(current_path, self.pipeline_config_params['short_read']['workdir'], fq1_name)
+                    fq2_path = os.path.join(current_path, self.pipeline_config_params['short_read']['workdir'], fq2_name)
                     command_temp.append("i1 {} i2 {}".format(fq1_path, fq2_path))
                 else:
                     fq = self.pipeline_config_params['data']['short_reads_file']
                     fq_name = '.'.join(os.path.splitext(os.path.split(fq)[1])[0].split('.')[:-1]) + "_val.fq"
-                    fq_path = os.path.join('..', self.pipeline_config_params['short_read']['workdir'], fq_name)
+                    fq_path = os.path.join(current_path, self.pipeline_config_params['short_read']['workdir'], fq_name)
                     command_temp.append("f {}".format(fq_path))
             else:
                 if self.pipeline_config_params['data']['short_reads_paired'] == '1':
@@ -157,7 +159,7 @@ class Assembly:
             command_temp.append("Contigs Contigs.txt")
             # Use raw/cleaned fastq
             if self.pipeline_config_params['long_read']['need_clean'] == '1':
-                pacbio = os.path.join('..', self.pipeline_config_params['long_read']['workdir'], self.core_config_params['long_read']['output'])
+                pacbio = os.path.join(current_path, self.pipeline_config_params['long_read']['workdir'], self.core_config_params['long_read']['output'])
                 command_temp.append("f {}".format(pacbio))
             else:
                 pacbio = self.pipeline_config_params['data']['long_reads_file']
@@ -175,7 +177,6 @@ class Assembly:
             command_list.append(' '.join(command_temp))
 
             # Generate command bash
-            current_path = os.getcwd()
             workdir = self.pipeline_config_params[self.module_name]['workdir']
 
             os.makedirs(workdir, exist_ok=True)
