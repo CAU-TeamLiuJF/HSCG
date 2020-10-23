@@ -39,10 +39,6 @@ class ScaffoldingRefBased:
         self.binary_config_params = binary_config_params
         self.core_config_params = core_config_params
 
-        self.data_config = DataConfigParam()
-        self.bopt_config = BoptConfigParam()
-        self.opt_config = OptConfigParam()
-
         self.need = 0
 
     def validate_config_params(self):
@@ -111,9 +107,11 @@ class ScaffoldingRefBased:
         self.validate_config_params()
 
         if self.need == 1:
+            current_path = os.getcwd()
+
             # Use Use raw/cleaned fasta
             if self.pipeline_config_params['long_read']['need_clean'] == '1':
-                pacbio = os.path.join('..', self.pipeline_config_params['long_read']['workdir'], self.core_config_params['long_read']['output'])
+                pacbio = os.path.join(current_path, self.pipeline_config_params['long_read']['workdir'], self.core_config_params['long_read']['output'])
             else:
                 pacbio = self.pipeline_config_params['data']['long_reads_file']
 
@@ -121,14 +119,14 @@ class ScaffoldingRefBased:
             if self.pipeline_config_params['scaffolding']['need'] == '1':
                 method_type = self.pipeline_config_params['scaffolding']['method_type']
                 if method_type == 'PBJELLY2':
-                    assembly = os.path.join('..', self.pipeline_config_params['scaffolding']['workdir'], 'output', 'jelly.out.fasta')
+                    assembly = os.path.join(current_path, self.pipeline_config_params['scaffolding']['workdir'], 'output', 'jelly.out.fasta')
                 elif method_type == 'SSPACELongRead':
-                    assembly = os.path.join('..', self.pipeline_config_params['scaffolding']['workdir'], 'PacBio_scaffolder_results', 'scaffolds.fasta')
+                    assembly = os.path.join(current_path, self.pipeline_config_params['scaffolding']['workdir'], 'PacBio_scaffolder_results', 'scaffolds.fasta')
                 else:
                     logger.error('Please provide [assembly] in opt.ini!')
                     exit(1)
             elif self.pipeline_config_params['assembly']['need'] == '1':
-                assembly = os.path.join('..', self.pipeline_config_params['assembly']['workdir'], 'consensus_dir', 'final_assembly.fasta')
+                assembly = os.path.join(current_path, self.pipeline_config_params['assembly']['workdir'], 'consensus_dir', 'final_assembly.fasta')
             else:
                 if not self.pipeline_config_params['data']['assembly'] or not os.path.exists(self.pipeline_config_params['data']['assembly']):
                     logger.error('Please provide [assembly] in opt.ini!')
@@ -156,7 +154,6 @@ class ScaffoldingRefBased:
             command_list.append(" ".join(command_temp))
 
             # Generate command bash
-            current_path = os.getcwd()
             workdir = self.pipeline_config_params[self.module_name]['workdir']
 
             os.makedirs(workdir, exist_ok=True)

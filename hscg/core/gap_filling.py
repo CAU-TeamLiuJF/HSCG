@@ -131,33 +131,35 @@ class GapFilling:
         self.validate_config_params()
 
         if self.need == 1:
+            method_type = self.pipeline_config_params[self.module_name]['method_type']
+
+            current_path = os.getcwd()
+
             # Use Use raw/cleaned fasta
             if self.pipeline_config_params['long_read']['need_clean'] == '1':
-                pacbio = os.path.join('..', self.pipeline_config_params['long_read']['workdir'], self.core_config_params['long_read']['output'])
+                pacbio = os.path.join(current_path, self.pipeline_config_params['long_read']['workdir'], self.core_config_params['long_read']['output'])
             else:
                 pacbio = self.pipeline_config_params['data']['long_reads_file']
 
             # Use raw/generated assembly
             if self.pipeline_config_params['scaffolding_ref_based']['need'] == '1':
-                assembly = os.path.join('..', self.pipeline_config_params['scaffolding_ref_based']['workdir'], 'ragoo_output', 'ragoo.fasta')
+                assembly = os.path.join(current_path, self.pipeline_config_params['scaffolding_ref_based']['workdir'], 'ragoo_output', 'ragoo.fasta')
             elif self.pipeline_config_params['scaffolding']['need'] == '1':
                 method_type = self.pipeline_config_params['scaffolding']['method_type']
                 if method_type == 'PBJELLY2':
-                    assembly = os.path.join('..', self.pipeline_config_params['scaffolding']['workdir'], 'output', 'jelly.out.fasta')
+                    assembly = os.path.join(current_path, self.pipeline_config_params['scaffolding']['workdir'], 'output', 'jelly.out.fasta')
                 elif method_type == 'SSPACELongRead':
-                    assembly = os.path.join('..', self.pipeline_config_params['scaffolding']['workdir'], 'PacBio_scaffolder_results', 'scaffolds.fasta')
+                    assembly = os.path.join(current_path, self.pipeline_config_params['scaffolding']['workdir'], 'PacBio_scaffolder_results', 'scaffolds.fasta')
                 else:
                     logger.error('Please provide [assembly] in opt.ini!')
                     exit(1)
             elif self.pipeline_config_params['assembly']['need'] == '1':
-                assembly = os.path.join('..', self.pipeline_config_params['assembly']['workdir'], 'consensus_dir', 'final_assembly.fasta')
+                assembly = os.path.join(current_path, self.pipeline_config_params['assembly']['workdir'], 'consensus_dir', 'final_assembly.fasta')
             else:
                 if not self.pipeline_config_params['data']['assembly'] or not os.path.exists(self.pipeline_config_params['data']['assembly']):
                     logger.error('Please provide [assembly] in opt.ini!')
                     exit(1)
                 assembly = self.pipeline_config_params['data']['assembly']
-
-            method_type = self.pipeline_config_params[self.module_name]['method_type']
 
             command_list = []
             if method_type == 'TGS_GapCloser':
@@ -187,7 +189,6 @@ class GapFilling:
                 command_list.append(' '.join(command_temp))
 
             # Generate command bash
-            current_path = os.getcwd()
             workdir = self.pipeline_config_params[self.module_name]['workdir']
 
             os.makedirs(workdir, exist_ok=True)

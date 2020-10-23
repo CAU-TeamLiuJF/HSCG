@@ -84,10 +84,6 @@ class Scaffolding:
         self.binary_config_params = binary_config_params
         self.core_config_params = core_config_params
 
-        self.data_config = DataConfigParam()
-        self.bopt_config = BoptConfigParam()
-        self.opt_config = OptConfigParam()
-
         self.need = 0
 
     def validate_config_params(self):
@@ -182,6 +178,23 @@ class Scaffolding:
             method_type = self.pipeline_config_params[self.module_name]['method_type']
 
             current_path = os.getcwd()
+
+            # Use raw/cleaned fastq
+            if self.pipeline_config_params['long_read']['need_clean'] == '1':
+                pacbio = os.path.join(current_path, self.pipeline_config_params['long_read']['workdir'], self.core_config_params['long_read']['output'])
+            else:
+                pacbio = self.pipeline_config_params['data']['long_reads_file']
+
+            # Use raw/generated assembly
+            if self.pipeline_config_params['assembly']['need'] == '1':
+                assembly = os.path.join(current_path, self.pipeline_config_params['assembly']['workdir'], 'consensus_dir', 'final_assembly.fasta')
+            else:
+                if not self.pipeline_config_params['data']['assembly'] or not os.path.exists(self.pipeline_config_params['data']['assembly']):
+                    logger.error('Please provide [assembly] in opt.ini!')
+                    exit(1)
+                assembly = self.pipeline_config_params['data']['assembly']
+
+
             workdir = self.pipeline_config_params[self.module_name]['workdir']
 
             os.makedirs(workdir, exist_ok=True)
@@ -191,23 +204,9 @@ class Scaffolding:
                 logger.info('Running PBJELLY2 pipeline ...')
 
                 # Split pacbio fasta
-                # Use raw/cleaned fastq
                 logger.info('Splitting pacbio data ...')
                 chunk_output_dirname = "chunk_output"
-                if self.pipeline_config_params['long_read']['need_clean'] == '1':
-                    pacbio = os.path.join('..', self.pipeline_config_params['long_read']['workdir'], self.core_config_params['long_read']['output'])
-                else:
-                    pacbio = self.pipeline_config_params['data']['long_reads_file']
                 split_fasta_by_size(pacbio, output_dir=chunk_output_dirname)
-
-                # Use raw/generated assembly
-                if self.pipeline_config_params['assembly']['need'] == '1':
-                    assembly = os.path.join('..', self.pipeline_config_params['assembly']['workdir'], 'consensus_dir', 'final_assembly.fasta')
-                else:
-                    if not self.pipeline_config_params['data']['assembly'] or not os.path.exists(self.pipeline_config_params['data']['assembly']):
-                        logger.error('Please provide [assembly] in opt.ini!')
-                        exit(1)
-                    assembly = self.pipeline_config_params['data']['assembly']
 
                 thread = self.core_config_params['scaffolding']['pbjelly2_threads']
                 xml = self.core_config_params['scaffolding']['pbjelly2_xml']
@@ -272,21 +271,6 @@ class Scaffolding:
 
             elif method_type == 'SSPACELongRead':
                 logger.info('Running SSPACE-LongRead pipeline ...')
-
-                # Use raw/cleaned fastq
-                if self.pipeline_config_params['long_read']['need_clean'] == '1':
-                    pacbio = os.path.join('..', self.pipeline_config_params['long_read']['workdir'], self.core_config_params['long_read']['output'])
-                else:
-                    pacbio = self.pipeline_config_params['data']['long_reads_file']
-
-                # Use raw/generated assembly
-                if self.pipeline_config_params['assembly']['need'] == '1':
-                    assembly = os.path.join('..', self.pipeline_config_params['assembly']['workdir'], 'consensus_dir', 'final_assembly.fasta')
-                else:
-                    if not self.pipeline_config_params['data']['assembly'] or not os.path.exists(self.pipeline_config_params['data']['assembly']):
-                        logger.error('Please provide [assembly] in opt.ini!')
-                        exit(1)
-                    assembly = self.pipeline_config_params['data']['assembly']
 
                 thread = self.core_config_params['scaffolding']['sspacelongread_threads']
 
