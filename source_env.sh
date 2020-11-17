@@ -21,4 +21,7 @@ export PATH=${software_dir}/bin/TGS-GapCloser-release_v1.0.1:${software_dir}/bin
 
 export PATH=${software_dir}/bin/LR_Gapcloser-master/src:$PATH
 
+export PATH=${software_dir}:$PATH
+
+
 
