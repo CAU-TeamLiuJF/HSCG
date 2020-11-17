@@ -48,3 +48,6 @@ unzip LR_Gapcloser-master.zip
 chmod u+x LR_Gapcloser-master/src/*
 mv LR_Gapcloser-master ../bin
 
+chmod u+x ../hscg_pipeline.py
+
+

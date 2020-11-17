@@ -130,14 +130,20 @@ class LongReadsTreatment:
             if self.pipeline_config_params['short_read']['need_clean'] == '1':
                 if self.pipeline_config_params['data']['short_reads_paired'] == '1':
                     fq1, fq2 = self.pipeline_config_params['data']['short_reads_file'].split(',')
-                    fq1_name = '.'.join(os.path.splitext(os.path.split(fq1)[1])[0].split('.')[:-1]) + "_val_1.fq"
-                    fq2_name = '.'.join(os.path.splitext(os.path.split(fq2)[1])[0].split('.')[:-1]) + "_val_2.fq"
+                    fq1_prefix_pre = os.path.splitext(os.path.split(fq1)[1])[0].split('.')[:-1]
+                    fq1_prefix_last = os.path.splitext(os.path.split(fq1)[1])[0].split('.')[-1]
+                    fq1_name = '.'.join(fq1_prefix_pre) + "." + fq1_prefix_last + "_val_1.fq"
+                    fq2_prefix_pre = os.path.splitext(os.path.split(fq2)[1])[0].split('.')[:-1]
+                    fq2_prefix_last = os.path.splitext(os.path.split(fq2)[1])[0].split('.')[-1]
+                    fq2_name = '.'.join(fq2_prefix_pre) + "." + fq2_prefix_last + "_val_2.fq"
                     fq1_path = os.path.join(current_path, self.pipeline_config_params['short_read']['workdir'], fq1_name)
                     fq2_path = os.path.join(current_path, self.pipeline_config_params['short_read']['workdir'], fq2_name)
                     command_content_list.append("-2 {},{}".format(fq1_path, fq2_path))
                 else:
                     fq = self.pipeline_config_params['data']['short_reads_file']
-                    fq_name = '.'.join(os.path.splitext(os.path.split(fq)[1])[0].split('.')[:-1]) + "_val.fq"
+                    fq_prefix_pre = os.path.splitext(os.path.split(fq)[1])[0].split('.')[:-1]
+                    fq_prefix_last = os.path.splitext(os.path.split(fq)[1])[0].split('.')[-1]
+                    fq_name = '.'.join(fq_prefix_pre) + "." + fq_prefix_last + "_val.fq"
                     fq_path = os.path.join(current_path, self.pipeline_config_params['short_read']['workdir'], fq_name)
                     command_content_list.append("-2 {}".format(fq_path))
             else:
