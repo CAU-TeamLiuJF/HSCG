@@ -2,19 +2,33 @@
 
 
 
+## 1 Introduction
+
 HSCG(Hybrid, Scaffold, Chromosomer, Gap-fill) is a hybrid assembly pipeline using short reads and long reads.
 
+```mermaid
+graph LR
+
+A(short_reads) -->|QC| C(Assembly)
+B(long_reads)  -->|QC| C(Assembly)
+
+C --> D(Scaffolding)
+D --> E(Reference-based Scaffolding)
+E --> F(Gap filling)
+
+```
 
 
-## Installation
+
+
+
+## 2 Installation
 
 Running HSCG requires a Linux-system with bash, Python3(>3.6) and Perl(>5.16). 
 
 
 
-### Python Dependencies
-
-
+### 2.1 Python Dependencies
 
 
 The following Python modules need to be installed:
@@ -39,13 +53,17 @@ The following software should also be installed in the same PYTHONPATH
 We recommend you create a virtual python environment.
 
 
-```
+```shell
 mkvirtualenv HSCG
+pip install biopython Networkx==1.7 pyparsing numpy h5py pysam intervaltree cutadapt
+
+cd <PATH TO RAGOO>
+python setup.py install
 ```
 
 
 
-### Assembly Dependencies
+### 2.2 Assembly Dependencies
 
 HSCG establishes a pipeline based on several bioinformatic softwares. These softwares need to be installed before running the pipeline.
 
@@ -63,6 +81,10 @@ HSCG establishes a pipeline based on several bioinformatic softwares. These soft
 
 **However, some softwares cause conflicts because of version of Python/Perl. For convienience, we revise theses scripts and package them in our project. We recommend the revised version.**
 
+revised software download: [ftp://175.24.116.235/hscg/](ftp://175.24.116.235/hscg/)
+
+download `src` and put the directory in HSCG.
+
 ```shell
 cd src
 bash compile_pipeline.sh
@@ -76,7 +98,24 @@ source source_env.sh
 
 
 
-## Usage
+After installation, the parent directory should be like:
+
+```shell
+HSCG
+|
+|---bin
+|---hscg
+|---src
+|
+|-----hscg_pipeline.py
+|-----source_env.sh
+```
+
+
+
+
+
+## 3 Usage
 
 Before running the pipeline, environment should be activated:
 
@@ -126,9 +165,15 @@ assembly =
 
 
 
-## Example
+## 4 Example
 
-### Common use
+To test the pipeline, you can download the test data from our FTP: 
+
+[ftp://175.24.116.235/hscg/test_data](ftp://175.24.116.235/hscg/)
+
+
+
+### 4.1 Common use
 
 **Generate configuration files**
 
@@ -152,17 +197,17 @@ hscg_pipeline.py --run
 
 
 
-### Use some specific modules
+### 4.2 Use some specific modules
 
 * only short reads quality control
 
 ```
 # opt.ini
 [data]
-short_reads_file = R1.fq,R2.fq
+short_reads_file = Illumina.R1.fq,Illumina.R2.fq
 short_reads_paired = 1
-long_reads_file = pacbio.fasta / an empty fasta
-reference_file = reference.fasta / an empty fasta
+long_reads_file = Pacbio_01.fasta / an empty fasta
+reference_file = ALAV01.fasta / an empty fasta
 assembly = 
 
 [short_read]
@@ -197,10 +242,10 @@ workdir = gap_filling
 ```
 # opt.ini
 [data]
-short_reads_file = R1.fq,R2.fq
+short_reads_file = Illumina.R1.fq,Illumina.R2.fq
 short_reads_paired = 1
-long_reads_file = pacbio.fasta
-reference_file = reference.fasta
+long_reads_file = Pacbio_01.fasta
+reference_file = ALAV01.fasta
 assembly = 
 
 [short_read]
@@ -235,10 +280,10 @@ workdir = gap_filling
 ```shell
 # opt.ini
 [data]
-short_reads_file = R1.fq,R2.fq
+short_reads_file = Illumina.R1.fq,Illumina.R2.fq
 short_reads_paired = 1
-long_reads_file = pacbio.fasta
-reference_file = reference.fasta / an empty file
+long_reads_file = Pacbio_01.fasta
+reference_file = ALAV01.fasta / an empty file
 assembly = assembly.fasta
 
 [short_read]
@@ -273,10 +318,10 @@ workdir = gap_filling
 ```
 # opt.ini
 [data]
-short_reads_file = R1.fq,R2.fq
+short_reads_file = Illumina.R1.fq,Illumina.R2.fq
 short_reads_paired = 1
-long_reads_file = pacbio.fasta
-reference_file = reference.fasta / an empty file
+long_reads_file = Pacbio_01.fasta
+reference_file = ALAV01.fasta / an empty file
 assembly = 
 
 [short_read]
