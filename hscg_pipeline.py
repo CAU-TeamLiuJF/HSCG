@@ -1,4 +1,4 @@
-# /bin/env python
+#! /bin/env python
 
 import os
 import argparse
@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(description=description, formatter_class=argpar
 parser.add_argument('--config', action='store_true', default=False, help='Generate configuration files for assembly pipeline.')
 parser.add_argument('--run', action='store_true', default=False, help='Running the assembly pipeline.')
 # parser.add_argument('-l', '--log', type=str, default="pipeline.{}.log".format(time.strftime('%Y-%m-%d',time.localtime(time.time()))), help='Define the log file.')
-parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
+parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0.1')
 args = parser.parse_args()
 
 
