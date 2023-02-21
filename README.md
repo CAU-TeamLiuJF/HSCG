@@ -18,9 +18,12 @@ E --> F(Gap filling)
 
 ```
 
+The HSCG software program is freely available. If you use HSCG and publish your analysis, please report the program version and cite
+the appropriate publication:
 
+Du, H., Diao, C., Zhao, P., Zhou, L., & Liu, J. F. (2021). Integrated hybrid de novo assembly technologies to obtain high-quality pig genome using short and long reads. Briefings in Bioinformatics, 22(5), bbaa399.
 
-
+[doi:10.1093/bib/bbaa399](https://doi.org/10.1093/bib/bbaa399)
 
 ## 2 Installation
 
