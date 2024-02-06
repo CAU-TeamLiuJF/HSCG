@@ -84,7 +84,7 @@ HSCG establishes a pipeline based on several bioinformatic softwares. These soft
 
 **However, some softwares cause conflicts because of version of Python/Perl. For convienience, we revise theses scripts and package them in our project. We recommend the revised version.**
 
-revised software download: [ftp://175.24.116.235/hscg/](ftp://175.24.116.235/hscg/)
+revised software download: [https://github.com/CAU-TeamLiuJF/HSCG_testdata](https://github.com/CAU-TeamLiuJF/HSCG_testdata)
 
 download `src` and put the directory in HSCG.
 
@@ -172,7 +172,7 @@ assembly =
 
 To test the pipeline, you can download the test data from our FTP: 
 
-[ftp://175.24.116.235/hscg/test_data](ftp://175.24.116.235/hscg/)
+[https://github.com/CAU-TeamLiuJF/HSCG_testdata](https://github.com/CAU-TeamLiuJF/HSCG_testdata)
 
 
 
